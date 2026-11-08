@@ -1,0 +1,575 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday ❤️</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    overflow-x: hidden;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    color: white;
+    background: linear-gradient(135deg,#ff4f9a,#a044d4,#5425a8);
+}
+
+.container {
+    position: relative;
+    z-index: 2;
+    padding: 35px 12px;
+}
+
+h1 {
+    font-size: clamp(30px,7vw,55px);
+    margin: 20px 0;
+    text-shadow: 0 0 18px white;
+}
+
+h2 { margin: 20px 0; }
+
+#countdown {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 25px 0;
+}
+
+.photo-box {
+    width: 90%;
+    max-width: 420px;
+    min-height: 200px;
+    margin: 25px auto;
+    padding: 10px;
+    background: #ffffff30;
+    border-radius: 20px;
+    box-shadow: 0 0 25px #ffffff80;
+}
+
+.photo-box img {
+    width: 100%;
+    max-height: 520px;
+    object-fit: contain;
+    border-radius: 15px;
+    display: block;
+    transition: opacity .5s;
+}
+
+#photoNumber { margin-top: 10px; }
+
+button {
+    padding: 13px 22px;
+    margin: 8px;
+    border: none;
+    border-radius: 30px;
+    background: white;
+    color: #a02080;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+.message {
+    max-width: 650px;
+    margin: 30px auto;
+    padding: 25px;
+    background: #ffffff25;
+    border-radius: 20px;
+    line-height: 1.9;
+    font-size: 17px;
+}
+
+/* FLYING BALLOONS */
+.balloon {
+    position: fixed;
+    bottom: -100px;
+    font-size: 38px;
+    animation: fly 10s linear forwards;
+    pointer-events: none;
+    z-index: 1;
+}
+
+@keyframes fly {
+    to {
+        transform: translateY(-120vh) rotate(25deg);
+        opacity: 0;
+    }
+}
+
+/* FLOATING HEARTS */
+.heart {
+    position: fixed;
+    bottom: -60px;
+    color: red;
+    font-size: 30px;
+    animation: heartFly 8s linear forwards;
+    pointer-events: none;
+    z-index: 1;
+}
+
+@keyframes heartFly {
+    to {
+        transform: translateY(-120vh) scale(1.8);
+        opacity: 0;
+    }
+}
+
+/* CAKE */
+.cake-area {
+    margin: 50px auto;
+    padding: 20px;
+}
+
+.cake {
+    position: relative;
+    width: 220px;
+    height: 150px;
+    margin: 80px auto 25px;
+}
+
+.cake-body {
+    position: absolute;
+    top: 20px;
+    width: 220px;
+    height: 120px;
+    border: 3px solid white;
+    border-radius: 8px 8px 20px 20px;
+    background: linear-gradient(#ffb0d5,#ed4d9b);
+}
+
+.cake-top {
+    position: absolute;
+    top: 0;
+    width: 220px;
+    height: 45px;
+    border: 3px solid white;
+    border-radius: 50%;
+    background: #ffc5e0;
+    z-index: 2;
+}
+
+.cake-body::after {
+    content: "🍓 🍒 🍓";
+    position: absolute;
+    top: 45px;
+    left: 0;
+    width: 100%;
+    font-size: 30px;
+}
+
+.candle {
+    position: absolute;
+    top: -65px;
+    left: 103px;
+    width: 14px;
+    height: 65px;
+    background: repeating-linear-gradient(
+        45deg,white,white 6px,#ff3986 6px,#ff3986 12px
+    );
+    border-radius: 5px;
+    z-index: 3;
+}
+
+.flame {
+    position: absolute;
+    top: -29px;
+    left: -4px;
+    width: 22px;
+    height: 30px;
+    background: radial-gradient(circle,white 5%,yellow 35%,orange 75%);
+    border-radius: 50%;
+    box-shadow: 0 0 20px orange;
+    animation: flicker .4s infinite alternate;
+}
+
+@keyframes flicker {
+    from { transform: scale(1) rotate(-5deg); }
+    to { transform: scale(1.15) rotate(5deg); }
+}
+
+.flame.out { display: none; }
+
+#cakeMessage {
+    margin: 20px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+#micStatus {
+    margin: 15px auto;
+    max-width: 500px;
+    line-height: 1.6;
+}
+
+/* CELEBRATION */
+.confetti {
+    position: fixed;
+    top: -20px;
+    font-size: 25px;
+    pointer-events: none;
+    z-index: 10;
+    animation: confettiFall 3s linear forwards;
+}
+
+@keyframes confettiFall {
+    to {
+        transform: translateY(110vh) rotate(720deg);
+        opacity: 0;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<!-- CHANGE BIRTHDAY GIRL NAME -->
+<h1>🎂 Happy Birthday, Koyel! 🎂</h1>
+<h2>💖 A Special Day For Someone Special 💖</h2>
+
+<div id="countdown"></div>
+
+<!-- 8 PHOTOS -->
+<div class="photo-box">
+    <img id="slideshow" src="photo1.jpg" alt="Birthday Memories">
+    <div id="photoNumber">Photo 1 of 8</div>
+</div>
+
+<button onclick="previousPhoto()">❮ Previous</button>
+<button onclick="nextPhoto()">Next ❯</button>
+
+<br>
+
+<button onclick="playMusic()">🎵 Play Music</button>
+<button onclick="pauseMusic()">⏸ Pause Music</button>
+
+<audio id="music" loop preload="auto">
+    <source src="song.mp3" type="audio/mpeg">
+</audio>
+
+<!-- BIRTHDAY LETTER -->
+<div class="message">
+    <h2>💌 A Special Birthday Letter 💌</h2>
+
+    <p>
+        Happy Birthday! ❤️<br>
+        May your life always be filled with happiness,
+        love, success and beautiful memories.<br>
+        May all your dreams come true.<br>
+        Keep smiling and stay happy forever! 🌸
+    </p>
+
+    <h2>❤️ You Are Special ❤️</h2>
+</div>
+
+<!-- LIVE BIRTHDAY CAKE -->
+<div class="cake-area">
+
+    <h1>🎂 Make A Birthday Wish 🎂</h1>
+    <p>Close your eyes, make a wish and blow the candle! 💗</p>
+
+    <div class="cake">
+        <div class="cake-body"></div>
+        <div class="cake-top"></div>
+
+        <div class="candle">
+            <div class="flame" id="flame"></div>
+        </div>
+    </div>
+
+    <div id="cakeMessage">
+        🕯️ Make a wish! The candle is waiting!
+    </div>
+
+    <button id="micButton" onclick="startBlowing()">
+        🎤 Blow Candle Using Mic
+    </button>
+
+    <button onclick="blowCandle()">
+        💨 Blow Candle
+    </button>
+
+    <p id="micStatus">
+        Press the microphone button and allow microphone access.
+    </p>
+
+</div>
+
+<button onclick="celebrate()">🎆 Celebrate Birthday 🎆</button>
+
+</div>
+
+<script>
+
+// EDIT BIRTHDAY DATE HERE
+const birthdayDate = new Date("2026-11-09T00:00:00").getTime();
+
+// COUNTDOWN
+function updateCountdown() {
+    const distance = birthdayDate - Date.now();
+
+    if (distance <= 0) {
+        document.getElementById("countdown").innerHTML =
+            "🎉 HAPPY BIRTHDAY! 🎉";
+        return;
+    }
+
+    const days = Math.floor(distance / 86400000);
+    const hours = Math.floor(distance % 86400000 / 3600000);
+    const minutes = Math.floor(distance % 3600000 / 60000);
+    const seconds = Math.floor(distance % 60000 / 1000);
+
+    document.getElementById("countdown").innerHTML =
+        `⏳ ${days} Days ${hours} Hours ${minutes} Minutes ${seconds} Seconds`;
+}
+
+setInterval(updateCountdown, 1000);
+updateCountdown();
+
+// 8 PHOTOS IN SAME GITHUB FOLDER
+const photos = [
+    "photo1.jpg",
+    "photo2.jpg",
+    "photo3.jpg",
+    "photo4.jpg",
+    "photo5.jpg",
+    "photo6.jpg",
+    "photo7.jpg",
+    "photo8.jpg"
+];
+
+let currentPhoto = 0;
+
+function showPhoto() {
+    const img = document.getElementById("slideshow");
+
+    img.style.opacity = "0";
+
+    setTimeout(() => {
+        img.onload = () => img.style.opacity = "1";
+        img.onerror = () => {
+            img.style.opacity = "1";
+            console.error("Photo not found:", photos[currentPhoto]);
+        };
+
+        img.src = photos[currentPhoto];
+
+        document.getElementById("photoNumber").innerText =
+            `Photo ${currentPhoto + 1} of 8`;
+    }, 250);
+}
+
+function nextPhoto() {
+    currentPhoto = (currentPhoto + 1) % photos.length;
+    showPhoto();
+}
+
+function previousPhoto() {
+    currentPhoto = (currentPhoto - 1 + photos.length) % photos.length;
+    showPhoto();
+}
+
+setInterval(nextPhoto, 4000);
+
+// MUSIC
+const music = document.getElementById("music");
+
+function playMusic() {
+    music.play().catch(() => {
+        alert("Please check song.mp3 file and MP3 format.");
+    });
+}
+
+function pauseMusic() {
+    music.pause();
+}
+
+// FLYING BALLOONS
+function createBalloon() {
+    const balloon = document.createElement("div");
+    balloon.className = "balloon";
+    balloon.textContent = ["🎈","🎈","💜","🎈","💗"][
+        Math.floor(Math.random() * 5)
+    ];
+    balloon.style.left = Math.random() * 100 + "vw";
+    document.body.appendChild(balloon);
+    setTimeout(() => balloon.remove(), 10000);
+}
+
+setInterval(createBalloon, 350);
+
+// FLOATING HEARTS
+function createHeart() {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.textContent = "❤️";
+    heart.style.left = Math.random() * 100 + "vw";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 8000);
+}
+
+setInterval(createHeart, 450);
+
+// CANDLE BLOWING
+let candleOff = false;
+let micStream = null;
+let audioContext = null;
+let analyser = null;
+let blowStart = null;
+let animationFrame = null;
+
+function stopMicrophone() {
+    if (animationFrame) {
+        cancelAnimationFrame(animationFrame);
+        animationFrame = null;
+    }
+
+    if (micStream) {
+        micStream.getTracks().forEach(track => track.stop());
+        micStream = null;
+    }
+
+    if (audioContext && audioContext.state !== "closed") {
+        audioContext.close();
+        audioContext = null;
+    }
+}
+
+function blowCandle() {
+    if (candleOff) return;
+
+    candleOff = true;
+
+    document.getElementById("flame").classList.add("out");
+
+    document.getElementById("cakeMessage").innerHTML =
+        "🎉 Your Wish Has Come True! Happy Birthday! ❤️";
+
+    document.getElementById("micStatus").innerHTML =
+        "💨 Candle blown successfully!";
+
+    document.getElementById("micButton").disabled = true;
+
+    stopMicrophone();
+    celebrate();
+}
+
+async function startBlowing() {
+    if (candleOff) return;
+
+    if (!navigator.mediaDevices ||
+        !navigator.mediaDevices.getUserMedia) {
+        document.getElementById("micStatus").innerText =
+            "Microphone needs HTTPS and browser permission. Use the manual button.";
+        return;
+    }
+
+    try {
+        document.getElementById("micStatus").innerText =
+            "Requesting microphone permission...";
+
+        micStream = await navigator.mediaDevices.getUserMedia({
+            audio: {
+                echoCancellation: false,
+                noiseSuppression: false,
+                autoGainControl: false
+            }
+        });
+
+        audioContext = new (
+            window.AudioContext || window.webkitAudioContext
+        )();
+
+        await audioContext.resume();
+
+        analyser = audioContext.createAnalyser();
+        analyser.fftSize = 2048;
+        analyser.smoothingTimeConstant = 0.2;
+
+        const source = audioContext.createMediaStreamSource(micStream);
+        source.connect(analyser);
+
+        const data = new Uint8Array(analyser.fftSize);
+
+        document.getElementById("micStatus").innerText =
+            "🎤 Microphone ON! Blow towards your phone or laptop microphone!";
+
+        let strongBlowStart = null;
+
+        function detectBlow() {
+            if (candleOff) return;
+
+            analyser.getByteTimeDomainData(data);
+
+            let sum = 0;
+
+            for (let i = 0; i < data.length; i++) {
+                const sample = (data[i] - 128) / 128;
+                sum += sample * sample;
+            }
+
+            const volume = Math.sqrt(sum / data.length);
+
+            if (volume > 0.055) {
+                if (strongBlowStart === null) {
+                    strongBlowStart = Date.now();
+                }
+
+                if (Date.now() - strongBlowStart >= 450) {
+                    blowCandle();
+                    return;
+                }
+            } else {
+                strongBlowStart = null;
+            }
+
+            animationFrame = requestAnimationFrame(detectBlow);
+        }
+
+        detectBlow();
+
+    } catch (error) {
+        stopMicrophone();
+
+        document.getElementById("micStatus").innerText =
+            "Microphone permission denied or unavailable. Allow microphone access and try again.";
+    }
+}
+
+// CELEBRATION
+function celebrate() {
+    for (let i = 0; i < 70; i++) {
+        const item = document.createElement("div");
+        item.className = "confetti";
+
+        item.textContent = ["🎉","✨","❤️","🎊","💖","🌸"][
+            Math.floor(Math.random() * 6)
+        ];
+
+        item.style.left = Math.random() * 100 + "vw";
+        item.style.animationDuration =
+            (2 + Math.random() * 3) + "s";
+
+        document.body.appendChild(item);
+
+        setTimeout(() => item.remove(), 5000);
+    }
+}
+
+</script>
+
+</body>
+</html>
